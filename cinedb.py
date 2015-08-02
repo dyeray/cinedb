@@ -3,13 +3,14 @@ import re
 import urllib.parse
 import urllib.request
 import http.cookiejar
+from getpass import getpass
 
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(
     http.cookiejar.CookieJar()))
 urllib.request.install_opener(opener)
 authentication_url = 'http://cinemageddon.net/takelogin.php'
 payload = {'username': input('Write your username: '),
-           'password': input('Write your password: ')}
+           'password': getpass('Write your password: ')}
 data = urllib.parse.urlencode(payload)
 binary_data = data.encode('UTF-8')
 req = urllib.request.Request(authentication_url, binary_data)
