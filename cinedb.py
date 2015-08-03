@@ -26,11 +26,19 @@ while input('Do you want to get page %s? (Y/n) ' % page) != 'n':
     soup = BeautifulSoup(html, 'html5lib')
     featured = soup.find('div', id='k02122')
     featured.extract()
-    ingredients = (lambda tag:tag.name == 'a' and
-                          tag['href'].startswith('details.php?id=') and
-                          not tag.text.isdigit())
+    ingredients = (lambda t: t.name == 'a' and
+                             t['href'].startswith('details.php?id=') and
+                             not t.text.isdigit())
     titles = map(lambda x: re.sub(r'\[[^\]]*\]', '', x['title']),
                  soup.findAll(ingredients))
     for t in titles:
-        print('http://www.imdb.com/find?q=' + urllib.parse.quote(t) + '&s=tt')
+        imdb_url = ('http://www.imdb.com/find?q=' + urllib.parse.quote(t) +
+                    '&s=tt')
+        imdb_soup = BeautifulSoup(
+            urllib.request.urlopen(imdb_url).read(), 'html5lib')
+        no_result = imdb_soup.find(lambda t: t.name == 'div' and
+                                             'class' in t.attrs and
+                                             'findNoResults' in t['class'])
+        if not no_result:
+            print(imdb_url)
     page += 1
