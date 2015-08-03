@@ -22,7 +22,7 @@ torrents_url = (
 page = 0
 while input('Do you want to get page %s? (Y/n) ' % page) != 'n':
     html = urllib.request.urlopen(torrents_url + str(page)).read()
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, 'html5lib')
     featured = soup.find('div', id='k02122')
     featured.extract()
     ingredients = (lambda tag:tag.name == 'a' and
