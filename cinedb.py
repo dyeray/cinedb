@@ -4,6 +4,7 @@ import urllib.parse
 import urllib.request
 import http.cookiejar
 from getpass import getpass
+import sys
 
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(
     http.cookiejar.CookieJar()))
@@ -18,7 +19,10 @@ torrents_url = (
     'http://cinemageddon.net/browse.php?c1=1&c14=1&c4=1&c15=1&c18=1&c9=1&c17=1&'
     'c8=1&c6=1&c2=1&c3=1&c7=1&c20=1&c13=1&c21=1&c16=1&c12=1&noimdb=1&page=0'
 )
-page = 0
+if len(sys.argv) == 2 and sys.argv[1].isdigit():
+    page = int(sys.argv[1])
+else:
+    page = 0
 while input('Do you want to get page %s? (Y/n) ' % page) != 'n':
     torrent_url = torrents_url + str(page)
     html = opener.open(torrent_url).read()
