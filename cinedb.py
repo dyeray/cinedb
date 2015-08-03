@@ -20,7 +20,9 @@ torrents_url = (
 )
 page = 0
 while input('Do you want to get page %s? (Y/n) ' % page) != 'n':
-    html = opener.open(torrents_url + str(page)).read()
+    torrent_url = torrents_url + str(page)
+    html = opener.open(torrent_url).read()
+    print(torrent_url)
     soup = BeautifulSoup(html, 'html5lib')
     featured = soup.find('div', id='k02122')
     featured.extract()
