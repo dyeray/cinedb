@@ -23,7 +23,11 @@ if len(sys.argv) == 2 and sys.argv[1].isdigit():
     page = int(sys.argv[1])
 else:
     page = 0
-while input('Do you want to get page %s? (Y/n) ' % page) != 'n':
+n_printed_films = 0
+while (n_printed_films < 20 or
+               input('Do you want to get page %s? (Y/n) ' % page) != 'n'):
+    if n_printed_films >= 20:
+        n_printed_films = 0
     torrent_url = torrents_url + str(page)
     html = opener.open(torrent_url).read()
     print(torrent_url)
@@ -45,4 +49,5 @@ while input('Do you want to get page %s? (Y/n) ' % page) != 'n':
                                              'findNoResults' in t['class'])
         if not no_result:
             print(imdb_url)
+            n_printed_films += 1
     page += 1
